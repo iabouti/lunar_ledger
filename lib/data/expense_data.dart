@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:lunar_ledger/models/expense_item.dart';
 import 'package:lunar_ledger/datetime/date_time_helper.dart';
 
-class ExpenseData {
+class ExpenseData extends ChangeNotifier {
   // list of ALL expenses
   List<ExpenseItem> overallExpenseList = [];
 
@@ -13,9 +14,17 @@ class ExpenseData {
   // add new expense
   void addNewExpense(ExpenseItem newExpense) {
     overallExpenseList.add(newExpense);
+
+    notifyListeners();
   }
 
   // delete expense
+  void deleteExpense(ExpenseItem expense) {
+    overallExpenseList.remove(expense);
+
+    notifyListeners();
+  }
+
   String getDayName(DateTime dateTime) {
     switch (dateTime.weekday) {
       case 1:
