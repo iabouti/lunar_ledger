@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lunar_ledger/components/expense_summary.dart';
 import 'package:lunar_ledger/components/expense_tile.dart';
 import 'package:lunar_ledger/data/expense_data.dart';
 import 'package:lunar_ledger/models/expense_item.dart';
@@ -15,6 +16,8 @@ class _HomePageState extends State<HomePage> {
   // text controllers
   final newExpenseNameController = TextEditingController();
   final newExpenseAmountController = TextEditingController();
+  final newExpenseDollarController = TextEditingController();
+  final newExpenseCentsController = TextEditingController();
 
   // add new expense
   void addNewExpense() {
@@ -30,9 +33,17 @@ class _HomePageState extends State<HomePage> {
                 controller: newExpenseNameController,
               ),
 
-              // expense amount
-              TextField(
-                controller: newExpenseAmountController,
+              Row(
+                children: [
+                  // dollars
+                  TextField(
+                    controller: newExpenseDollarController,
+                  ),
+                  // cents
+                  TextField(
+                    controller: newExpenseCentsController,
+                  ),
+                ],
               ),
             ],
           ),
@@ -85,10 +96,17 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.grey[300],
         floatingActionButton: FloatingActionButton(
           onPressed: addNewExpense,
-          child: Icon(Icons.add),
+          backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
+          child: const Icon(Icons.add),
         ),
         body: ListView(children: [
+          const SizedBox(height: 20),
+
           // weekly summary
+          ExpenseSummary(startOfWeek: value.startOfWeekDate()),
+
+          const SizedBox(height: 20),
 
           // expense list
           ListView.builder(
