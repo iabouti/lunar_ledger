@@ -15,9 +15,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // text controllers
   final newExpenseNameController = TextEditingController();
-  final newExpenseAmountController = TextEditingController();
   final newExpenseDollarController = TextEditingController();
   final newExpenseCentsController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // prepare data on startup
+    Provider.of<ExpenseData>(context, listen: false).prepareData();
+  }
 
   // add new expense
   void addNewExpense() {
@@ -66,12 +72,12 @@ class _HomePageState extends State<HomePage> {
             // save button
             MaterialButton(
               onPressed: save,
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
             // cancel button
             MaterialButton(
               onPressed: cancel,
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ]),
     );
@@ -86,7 +92,7 @@ class _HomePageState extends State<HomePage> {
     // create expense item
     ExpenseItem newExpense = ExpenseItem(
       name: newExpenseNameController.text,
-      amount: newExpenseAmountController.text,
+      amount: amount,
       dateTime: DateTime.now(),
     );
     // add the new expense

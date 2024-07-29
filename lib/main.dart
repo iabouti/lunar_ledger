@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:lunar_ledger/data/expense_data.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 
-void main() {
+void main() async {
+  // initilize hive
+  await Hive.initFlutter();
+
+  // open a hive box
+  await Hive.openBox("expense_database");
+
   runApp(const MyApp());
 }
 
