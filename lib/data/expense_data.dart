@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lunar_ledger/data/hive_database.dart';
 import 'package:lunar_ledger/models/expense_item.dart';
 import 'package:lunar_ledger/datetime/date_time_helper.dart';
 
@@ -12,9 +13,12 @@ class ExpenseData extends ChangeNotifier {
   }
 
   // prepare data to display
+  final db = HiveDataBase();
   void prepareData() {
     // if there exists data, get it
-    if
+    if (db.readData().isNotEmpty) {
+      overallExpenseList = db.readData();
+    }
   }
 
   // add new expense
@@ -22,6 +26,7 @@ class ExpenseData extends ChangeNotifier {
     overallExpenseList.add(newExpense);
 
     notifyListeners();
+    db.saveData(overallExpenseList);
   }
 
   // delete expense
@@ -29,6 +34,7 @@ class ExpenseData extends ChangeNotifier {
     overallExpenseList.remove(expense);
 
     notifyListeners();
+    db.saveData(overallExpenseList);
   }
 
   String getDayName(DateTime dateTime) {

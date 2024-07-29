@@ -83,20 +83,31 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // delete expense
+  void deleteExpense(ExpenseItem expense) {
+    Provider.of<ExpenseData>(context, listen: false).deleteExpense(expense);
+  }
+
   // save
   void save() {
-    // put dollars and cents together
-    String amount =
-        '${newExpenseDollarController.text}.${newExpenseCentsController.text}';
+    // only save expense if all fields are filled
+    if (newExpenseNameController.text.isNotEmpty &&
+        newExpenseDollarController.text.isNotEmpty &&
+        newExpenseCentsController.text.isNotEmpty) {
+      // put dollars and cents together
+      String amount =
+          '${newExpenseDollarController.text}.${newExpenseCentsController.text}';
 
-    // create expense item
-    ExpenseItem newExpense = ExpenseItem(
-      name: newExpenseNameController.text,
-      amount: amount,
-      dateTime: DateTime.now(),
-    );
-    // add the new expense
-    Provider.of<ExpenseData>(context, listen: false).addNewExpense(newExpense);
+      // create expense item
+      ExpenseItem newExpense = ExpenseItem(
+        name: newExpenseNameController.text,
+        amount: amount,
+        dateTime: DateTime.now(),
+      );
+      // add the new expense
+      Provider.of<ExpenseData>(context, listen: false)
+          .addNewExpense(newExpense);
+    }
 
     Navigator.pop(context);
     clear();
@@ -143,6 +154,8 @@ class _HomePageState extends State<HomePage> {
               name: value.getAllExpenseList()[index].name,
               amount: value.getAllExpenseList()[index].amount,
               dateTime: value.getAllExpenseList()[index].dateTime,
+              deleteTapped: (p0) =>
+                  deleteExpense(value.getAllExpenseList()[index]),
             ),
           )
         ]),
